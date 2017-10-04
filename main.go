@@ -2,9 +2,9 @@ package main
 
 import (
 	"fmt"
+	"github.com/qwertypomy/printers/config"
 	"github.com/qwertypomy/printers/dao/factory"
 	"github.com/qwertypomy/printers/models"
-	"github.com/qwertypomy/printers/utils"
 	"log"
 )
 
@@ -16,7 +16,7 @@ func HandleErr(err error) {
 }
 
 func main() {
-	config, err := utils.GetConfig()
+	config, err := config.GetConfig()
 	HandleErr(err)
 
 	// factoryDao usage example

@@ -14,13 +14,15 @@ type IdNameDescription struct {
 }
 
 type Printer struct {
-	IdNameDescription
+	Id                 int
+	Name               string
+	Description        string
 	PagePerMinute      int
-	Brand              PrinterBrand
-	PrintingTechnology PrinterPrintingTechnology
-	FunctionType       PrinterFunctionType
-	PrintSize          PrinterPrintSize
-	PrintResolution    PrinterPrintResolution
+	Brand              *PrinterBrand
+	PrintingTechnology *PrinterPrintingTechnology
+	FunctionType       *PrinterFunctionType
+	PrintSize          *PrinterPrintSize
+	PrintResolution    *PrinterPrintResolution
 	ConnectivityType   []PrinterConnectivityType
 	Size               string
 	Weight             string
@@ -46,9 +48,8 @@ type PrinterPrintSize struct {
 }
 
 type PrinterPrintResolution struct {
-	Id int
-	X  int
-	Y  int
+	X int
+	Y int
 }
 
 type PrinterConnectivityType struct {

@@ -144,19 +144,89 @@ func (pdi PrinterDaoImpl) CreatePrinterPrintResolution(x, y int) (printResolutio
 	if err != nil {
 		return
 	}
-	err = Db.QueryRow("select LAST_INSERT_ID()").Scan(&printResolution.Id)
 	return
 }
 
 func (pdi PrinterDaoImpl) PrinterPrintResolutionList() (printResolutionList []models.PrinterPrintResolution, err error) {
-	rows, err := Db.Query("select id, x, y from print_resolution")
+	rows, err := Db.Query("select x, y from print_resolution")
 	if err != nil {
 		return
 	}
 	for rows.Next() {
 		var printResolution models.PrinterPrintResolution
-		rows.Scan(&printResolution.Id, &printResolution.X, &printResolution.Y)
+		rows.Scan(&printResolution.X, &printResolution.Y)
 		printResolutionList = append(printResolutionList, printResolution)
+	}
+	return
+}
+
+/////////////////// functions for Printer ///////////////////
+func (pdi PrinterDaoImpl) CreatePrinter(
+	name string,
+	description string,
+	pagePerMinute int,
+	brand *models.PrinterBrand,
+	printingTechnology *models.PrinterPrintingTechnology,
+	functionType *models.PrinterFunctionType,
+	printSize *models.PrinterPrintSize,
+	printResolution *models.PrinterPrintResolution,
+	connectivityType []models.PrinterConnectivityType,
+	size string,
+	weight string,
+	additionalInfo string,
+	number int,
+	price int,
+) (printer models.Printer, err error) {
+	printer = models.Printer{
+		Name:               name,
+		Description:        description,
+		PagePerMinute:      pagePerMinute,
+		Brand:              brand,
+		PrintingTechnology: printingTechnology,
+		FunctionType:       functionType,
+		PrintSize:          printSize,
+		PrintResolution:    printResolution,
+		ConnectivityType:   connectivityType,
+		Size:               size,
+		Weight:             weight,
+		AdditionalInfo:     additionalInfo,
+		Number:             number,
+		Price:              price,
+	}
+	_, err = Db.Exec("insert into printer (x, y) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+		printer.Name,
+		printer.Description,
+		printer.PagePerMinute,
+		printer.Brand.Id,
+		printer.PrintingTechnology.Id,
+		printer.FunctionType.Id,
+		printer.PrintSize.Id,
+		printer.Size,
+		printer.Weight,
+		printer.AdditionalInfo,
+		printer.Number,
+		printer.Price,
+		printer.PrintResolution.X,
+		printer.PrintResolution.Y,
+	)
+	if err != nil {
+		return
+	}
+	err = Db.QueryRow("select LAST_INSERT_ID()").Scan(&printer.Id)
+	return
+}
+
+func (pdi PrinterDaoImpl) PrinterList() (printerList []models.Printer, err error) {
+	rows, err := Db.Query("select id, name, pages_per_minute, brand_id, printing_technology_id, function_type_id, print_size_id, print_resolution_id, size, weight, description, additional_info, number, price, print_resolution_x, print_resolution_y from print_resolution")
+	if err != nil {
+		return
+	}
+	for rows.Next() {
+		var printer models.Printer
+		var brand_id, printing_technology_id, function_type_id, print_size_id, print_resolution_id, print_resolution_x, print_resolution_y int
+		rows.Scan(&printer.Id, &printer.Name, &printer.PagePerMinute, &brand_id, &printing_technology_id, &function_type_id, &print_size_id, &print_resolution_id, printer.Size, printer.Weight, printer.Description, printer.AdditionalInfo, printer.Number, printer.Price, print_resolution_x, print_resolution_y)
+		printerList = append(printerList, printer)
+
 	}
 	return
 }
