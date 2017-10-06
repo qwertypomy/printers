@@ -1,57 +1,59 @@
 package models
 
-// Abstract struct IdValue
-type IdValue struct {
-	Id    int
-	Value string
-}
-
-// Abstract struct IdNameDescription
-type IdNameDescription struct {
-	Id          int
-	Name        string
-	Description string
-}
-
 type Printer struct {
-	Id                 int
-	Name               string
-	Description        string
-	PagePerMinute      int
-	Brand              *PrinterBrand
-	PrintingTechnology *PrinterPrintingTechnology
-	FunctionType       *PrinterFunctionType
-	PrintSize          *PrinterPrintSize
-	PrintResolution    *PrinterPrintResolution
-	ConnectivityType   []PrinterConnectivityType
-	Size               string
-	Weight             string
-	AdditionalInfo     string
-	Number             int
-	Price              int
+	ID                   uint
+	Name                 string             `gorm:"size:45;unique;not null"`
+	Description          string             `gorm:"size:2000"`
+	PagePerMinute        uint               `gorm:"not null"`
+	BrandID              uint               `gorm:"not null"`
+	PrintingTechnologyID uint               `gorm:"not null"`
+	FunctionTypeID       uint               `gorm:"not null"`
+	PrintSizeID          uint               `gorm:"not null"`
+	PrintResolutionX     uint               `gorm:"not null"`
+	PrintResolutionY     uint               `gorm:"not null"`
+	ConnectivityTypes    []ConnectivityType `gorm:"many2many:printer_connectivity_type"`
+	Size                 string             `gorm:"size:16"`
+	Weight               string             `gorm:"size:16"`
+	AdditionalInfo       string             `gorm:"size:500"`
+	Number               uint               `gorm:"size:8;not null"`
+	Price                uint               `gorm:"size:8;not null"`
 }
 
-type PrinterBrand struct {
-	IdNameDescription
+type Brand struct {
+	ID          uint
+	Name        string `gorm:"size:16;unique;not null"`
+	Description string `gorm:"size:2000"`
+	Printers    []Printer
 }
 
-type PrinterPrintingTechnology struct {
-	IdNameDescription
+type PrintingTechnology struct {
+	ID          uint
+	Name        string `gorm:"size:16;unique;not null"`
+	Description string `gorm:"size:2000"`
+	Printers    []Printer
 }
 
-type PrinterFunctionType struct {
-	IdNameDescription
+type FunctionType struct {
+	ID          uint
+	Name        string `gorm:"size:45;unique;not null"`
+	Description string `gorm:"size:2000"`
+	Printers    []Printer
 }
 
-type PrinterPrintSize struct {
-	IdValue
+type PrintSize struct {
+	ID       uint
+	Name     string `gorm:"size:3;unique;not null"`
+	Printers []Printer
 }
 
-type PrinterPrintResolution struct {
-	X int
-	Y int
+type PrintResolution struct {
+	X        uint `gorm:"not null"`
+	Y        uint `gorm:"not null"`
+	Printers []Printer
 }
 
-type PrinterConnectivityType struct {
-	IdValue
+type ConnectivityType struct {
+	ID       uint
+	Name     string    `gorm:"size:16;unique;not null"`
+	Printers []Printer `gorm:"many2many:printer_connectivity_type;"`
 }
