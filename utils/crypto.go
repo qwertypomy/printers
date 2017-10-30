@@ -4,7 +4,6 @@ import (
 	"crypto/rand"
 	"crypto/sha1"
 	"fmt"
-	"log"
 )
 
 // create a random UUID with from RFC 4122
@@ -12,10 +11,7 @@ import (
 func CreateUUID() (uuid string) {
 	u := new([16]byte)
 	_, err := rand.Read(u[:])
-	if err != nil {
-		log.Fatalln("Cannot generate UUID", err)
-	}
-
+	FatalError(err)
 	// 0x40 is reserved variant from RFC 4122
 	u[8] = (u[8] | 0x40) & 0x7F
 	// Set the four most significant bits (bits 12 through 15) of the

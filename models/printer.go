@@ -1,59 +1,51 @@
 package models
 
+import (
+	"database/sql"
+)
+
 type Printer struct {
 	ID                   uint
-	Name                 string             `gorm:"size:45;unique;not null"`
-	Description          string             `gorm:"size:2000"`
-	PagePerMinute        uint               `gorm:"not null"`
-	BrandID              uint               `gorm:"not null"`
-	PrintingTechnologyID uint               `gorm:"not null"`
-	FunctionTypeID       uint               `gorm:"not null"`
-	PrintSizeID          uint               `gorm:"not null"`
-	PrintResolutionX     uint               `gorm:"not null"`
-	PrintResolutionY     uint               `gorm:"not null"`
-	ConnectivityTypes    []ConnectivityType `gorm:"many2many:printer_connectivity_type"`
-	Size                 string             `gorm:"size:16"`
-	Weight               string             `gorm:"size:16"`
-	AdditionalInfo       string             `gorm:"size:500"`
-	Number               uint               `gorm:"size:8;not null"`
-	Price                uint               `gorm:"size:8;not null"`
+	Name                 string         `db:"name"`
+	Description          sql.NullString `db:"description"`
+	PagePerMinute        uint           `db:"page_per_minute"`
+	BrandID              uint           `db:"brand_id"`
+	PrintingTechnologyID uint           `db:"printing_technology_id"`
+	FunctionTypeID       uint           `db:"function_type_id"`
+	PrintSizeID          uint           `db:"print_size_id"`
+	PrintResolutionX     uint           `db:"print_resolution_x"`
+	PrintResolutionY     uint           `db:"print_resolution_y"`
+	Size                 sql.NullString `db:"size"`
+	Weight               sql.NullString `db:"weight"`
+	AdditionalInfo       sql.NullString `db:"additional_info"`
+	Amount               uint           `db:"amount"`
+	Price                uint           `db:"price"`
 }
 
 type Brand struct {
 	ID          uint
-	Name        string `gorm:"size:16;unique;not null"`
-	Description string `gorm:"size:2000"`
-	Printers    []Printer
+	Name        string         `db:"name"`
+	Description sql.NullString `db:"description"`
 }
 
 type PrintingTechnology struct {
 	ID          uint
-	Name        string `gorm:"size:16;unique;not null"`
-	Description string `gorm:"size:2000"`
-	Printers    []Printer
+	Name        string         `db:"name"`
+	Description sql.NullString `db:"description"`
 }
 
 type FunctionType struct {
 	ID          uint
-	Name        string `gorm:"size:45;unique;not null"`
-	Description string `gorm:"size:2000"`
-	Printers    []Printer
+	Name        string         `db:"name"`
+	Description sql.NullString `db:"description"`
 }
 
 type PrintSize struct {
-	ID       uint
-	Name     string `gorm:"size:3;unique;not null"`
-	Printers []Printer
+	ID   uint
+	Name string `db:"name"`
 }
 
 type PrintResolution struct {
-	X        uint `gorm:"not null"`
-	Y        uint `gorm:"not null"`
-	Printers []Printer
-}
-
-type ConnectivityType struct {
-	ID       uint
-	Name     string    `gorm:"size:16;unique;not null"`
-	Printers []Printer `gorm:"many2many:printer_connectivity_type;"`
+	X uint
+	Y uint
 }

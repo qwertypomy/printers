@@ -4,10 +4,15 @@ import "time"
 
 type User struct {
 	ID        uint
-	Name      string `gorm:"size:16;unique;not null"`
-	Uuid      string `gorm:"size:36;not null"`
-	Email     string
-	Password  string `gorm:"size:40;not null"`
-	IsAdmin   bool   `gorm:"not null;default:0"`
+	Name      string    `db:"name"`
+	Email     string    `db:"email"`
+	Password  string    `db:"password"`
+	IsAdmin   bool      `db:"is_admin"`
+	CreatedAt time.Time `db:"created_at"`
+}
+
+type Session struct {
+	Uuid      string
+	UserID    uint
 	CreatedAt time.Time
 }

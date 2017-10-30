@@ -2,43 +2,24 @@ package mysql
 
 import (
 	"fmt"
-	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/mysql"
+	_ "github.com/go-sql-driver/mysql"
+	"github.com/jmoiron/sqlx"
 	"github.com/qwertypomy/printers/config"
-	"github.com/qwertypomy/printers/models"
-	"log"
+	"github.com/qwertypomy/printers/utils"
 )
 
-var Db *gorm.DB
+var Db *sqlx.DB
 
 func init() {
 	Db = getDB()
 }
 
-func getDB() *gorm.DB {
+func getDB() *sqlx.DB {
 	cfg, err := config.GetConfig()
-	if err != nil {
-		log.Fatalln(err)
-		return nil
-	}
+	utils.FatalError(err)
 
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=True&loc=Local", cfg.User, cfg.Password, cfg.Server, cfg.Port, cfg.Database)
-	db, err := gorm.Open("mysql", dsn)
-	if err != nil {
-		log.Fatalln(err)
-		return nil
-	}
-
-	db.AutoMigrate(
-		&models.User{},
-		&models.Printer{},
-		&models.PrintSize{},
-		&models.Brand{},
-		&models.ConnectivityType{},
-		&models.FunctionType{},
-		&models.PrintingTechnology{},
-		&models.PrintResolution{},
-	)
-
+	db, err := sqlx.Open("mysql", dsn)
+	utils.FatalError(err)
 	return db
 }

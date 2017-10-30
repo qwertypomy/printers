@@ -8,40 +8,67 @@ import (
 type UserDaoImpl struct {
 }
 
-func (UserDaoImpl) CreateUser(user *models.User) {
-	user.Uuid = utils.CreateUUID()
+func (UserDaoImpl) CreateUser(user *models.User) (err error) {
+	rowPassword := user.Password
 	user.Password = utils.Encrypt(user.Password)
-	Db.Create(&user)
-}
-
-func (UserDaoImpl) DeleteUser(user *models.User) {
-	Db.Delete(&user)
-}
-
-func (UserDaoImpl) UpdateUser(user *models.User) {
-	Db.Model(&user).Updates(map[string]interface{}{"name": user.Name, "email": user.Email, "password": utils.Encrypt(user.Password)})
-}
-
-func (UserDaoImpl) DeleteAllUsers() {
-	Db.Exec("truncate table users")
-}
-
-func (UserDaoImpl) UserList() (users []models.User) {
-	Db.Find(&users)
+	res, err := Db.NamedExec("INSERT INTO user (name, email, password, is_admin) VALUES (:name, :email, :password, :is_admin)", &user)
+	user.Password = rowPassword
+	if err != nil {
+		return
+	} else {
+		id, err := res.LastInsertId()
+		if err != nil {
+			return err
+		} else {
+			user.ID = uint(id)
+		}
+	}
 	return
 }
 
-func (UserDaoImpl) UserByName(name string) (user models.User) {
-	Db.Where("name = ?", name).First(&user)
+func (UserDaoImpl) DeleteUserByID(id uint) (err error) {
+	_, err = Db.Exec("DELETE FROM user WHERE id=?", id)
 	return
 }
 
-func (UserDaoImpl) UserByUUID(uuid string) (user models.User) {
-	Db.Where("uuid = ?", uuid).First(&user)
+func (UserDaoImpl) UpdateUserEmail(user *models.User) (err error) {
+	_, err = Db.Exec("UPDATE users SET email = ? WHERE id =?", user.Email, user.ID)
 	return
 }
 
-func (UserDaoImpl) UserById(id uint) (user models.User) {
-	Db.Where("id = ?", id).First(&user)
+func (UserDaoImpl) UpdateUserPassword(user *models.User) (err error) {
+	_, err = Db.Exec("UPDATE users SET password = ? WHERE id =?", utils.Encrypt(user.Password), user.ID)
+	return
+}
+
+func (UserDaoImpl) DeleteAllUsers() (err error) {
+	_, err = Db.Exec("DELETE FROM user")
+	return
+}
+
+func (UserDaoImpl) UserList() (userList []models.User, err error) {
+	rows, err := Db.Queryx("SELECT * FROM user")
+	if err != nil {
+		return
+	}
+	for rows.Next() {
+		var user models.User
+		err = rows.StructScan(&user)
+		if err != nil {
+			return
+		}
+		userList = append(userList, user)
+	}
+	rows.Close()
+	return
+}
+
+func (UserDaoImpl) UserByName(name string) (user *models.User, err error) {
+	err = Db.QueryRowx("SELECT * FROM  user WHERE name=?", name).StructScan(&user)
+	return
+}
+
+func (UserDaoImpl) UserByID(id uint) (user *models.User, err error) {
+	err = Db.QueryRowx("SELECT * FROM  user WHERE id=?", id).StructScan(&user)
 	return
 }
