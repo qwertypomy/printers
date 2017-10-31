@@ -8,7 +8,7 @@ type Printer struct {
 	ID                   uint
 	Name                 string         `db:"name"`
 	Description          sql.NullString `db:"description"`
-	PagePerMinute        uint           `db:"page_per_minute"`
+	PagePerMinute        float32        `db:"page_per_minute"`
 	BrandID              uint           `db:"brand_id"`
 	PrintingTechnologyID uint           `db:"printing_technology_id"`
 	FunctionTypeID       uint           `db:"function_type_id"`
@@ -16,7 +16,7 @@ type Printer struct {
 	PrintResolutionX     uint           `db:"print_resolution_x"`
 	PrintResolutionY     uint           `db:"print_resolution_y"`
 	Size                 sql.NullString `db:"size"`
-	Weight               sql.NullString `db:"weight"`
+	Weight               float32        `db:"weight"`
 	AdditionalInfo       sql.NullString `db:"additional_info"`
 	Amount               uint           `db:"amount"`
 	Price                uint           `db:"price"`
