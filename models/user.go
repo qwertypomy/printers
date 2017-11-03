@@ -10,9 +10,3 @@ type User struct {
 	IsAdmin   bool      `db:"is_admin"`
 	CreatedAt time.Time `db:"created_at"`
 }
-
-type Session struct {
-	Uuid      string
-	UserID    uint
-	CreatedAt time.Time
-}

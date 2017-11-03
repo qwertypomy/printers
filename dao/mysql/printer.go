@@ -38,7 +38,7 @@ func (PrinterDaoImpl) GetPrintSizeByID(id uint) (printSize *models.PrintSize, er
 	return
 }
 
-func (PrinterDaoImpl) PrintSizeList() (printSizeList []models.PrintSize) {
+func (PrinterDaoImpl) PrintSizeList() (printSizeList []models.PrintSize, err error) {
 	rows, err := Db.Queryx("SELECT * FROM print_size")
 	if err != nil {
 		return
@@ -91,7 +91,7 @@ func (PrinterDaoImpl) GetBrandByID(id uint) (brand *models.Brand, err error) {
 	return
 }
 
-func (PrinterDaoImpl) BrandList() (brandList []models.Brand) {
+func (PrinterDaoImpl) BrandList() (brandList []models.Brand, err error) {
 	rows, err := Db.Queryx("SELECT * FROM brand")
 	if err != nil {
 		return
@@ -144,7 +144,7 @@ func (PrinterDaoImpl) GetPrintingTechnologyByID(id uint) (printingTechnology *mo
 	return
 }
 
-func (PrinterDaoImpl) PrintingTechnologyList() (printingTechnologyList []models.PrintingTechnology) {
+func (PrinterDaoImpl) PrintingTechnologyList() (printingTechnologyList []models.PrintingTechnology, err error) {
 	rows, err := Db.Queryx("SELECT * FROM printing_technology")
 	if err != nil {
 		return
@@ -197,7 +197,7 @@ func (PrinterDaoImpl) GetFunctionTypeByID(id uint) (functionType *models.Functio
 	return
 }
 
-func (PrinterDaoImpl) FunctionTypeList() (functionTypeList []models.FunctionType) {
+func (PrinterDaoImpl) FunctionTypeList() (functionTypeList []models.FunctionType, err error) {
 	rows, err := Db.Queryx("SELECT * FROM function_type")
 	if err != nil {
 		return
@@ -240,7 +240,7 @@ func (PrinterDaoImpl) GetPrintResolution(printResolution *models.PrintResolution
 	return
 }
 
-func (PrinterDaoImpl) PrintResolutionList() (printResolutionList []models.PrintResolution) {
+func (PrinterDaoImpl) PrintResolutionList() (printResolutionList []models.PrintResolution, err error) {
 	rows, err := Db.Queryx("SELECT * FROM print_resolution")
 	if err != nil {
 		return
@@ -293,7 +293,7 @@ func (PrinterDaoImpl) GetPrinterByID(id uint) (printer *models.Printer, err erro
 	return
 }
 
-func (PrinterDaoImpl) PrinterList() (printerList []models.Printer) {
+func (PrinterDaoImpl) PrinterList() (printerList []models.Printer, err error) {
 	rows, err := Db.Queryx("SELECT * FROM printer")
 	if err != nil {
 		return

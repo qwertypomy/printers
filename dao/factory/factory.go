@@ -33,3 +33,15 @@ func (factory *FactoryDao) GetPrinterDaoInterface() interfaces.PrinterDao {
 		return nil
 	}
 }
+
+func (factory *FactoryDao) GetOrderDaoInterface() interfaces.OrderDao {
+	switch factory.Engine {
+	case "mysql":
+		return mysql.OrderDaoImpl{}
+		//case "mongodb":
+		//	return mongodb.OrderDaoImpl{}
+	default:
+		log.Fatalf("No OrderDao implementation for %s", factory.Engine)
+		return nil
+	}
+}

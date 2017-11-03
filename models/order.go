@@ -10,7 +10,7 @@ type Order struct {
 	CreatedAt time.Time `db:"created_at"`
 }
 
-type OrderPrinter struct {
+type OrderHasPrinter struct {
 	PrinterID uint `db:"printer_id"`
 	OrderID   uint `db:"order_id"`
 	Amount    uint `db:"amount"`
