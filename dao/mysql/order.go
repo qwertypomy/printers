@@ -17,7 +17,7 @@ func (OrderDaoImpl) CreateOrder(order *models.Order) (err error) {
 		if err != nil {
 			return err
 		} else {
-			order.ID = uint(id)
+			order.ID = string(id)
 		}
 	}
 	return
@@ -28,12 +28,12 @@ func (OrderDaoImpl) UpdateOrder(order *models.Order) (err error) {
 	return
 }
 
-func (OrderDaoImpl) DeleteOrderByID(id uint) (err error) {
+func (OrderDaoImpl) DeleteOrderByID(id string) (err error) {
 	_, err = Db.Exec("DELETE FROM `order` WHERE id=?", id)
 	return
 }
 
-func (OrderDaoImpl) GetOrderByID(id uint) (order *models.Order, err error) {
+func (OrderDaoImpl) GetOrderByID(id string) (order *models.Order, err error) {
 	err = Db.QueryRowx("SELECT * FROM `order` WHERE id=?", id).StructScan(&order)
 	return
 }
@@ -98,7 +98,7 @@ func (OrderDaoImpl) OrderHasPrinterList() (orderHasPrinterList []models.OrderHas
 	return
 }
 
-func (OrderDaoImpl) OrderHasPrinterListByOrderId(orderID uint) (orderHasPrinterList []models.OrderHasPrinter, err error) {
+func (OrderDaoImpl) OrderHasPrinterListByOrderId(orderID string) (orderHasPrinterList []models.OrderHasPrinter, err error) {
 	rows, err := Db.Queryx("SELECT * FROM order_has_printer WHERE order_id=?", orderID)
 	if err != nil {
 		return

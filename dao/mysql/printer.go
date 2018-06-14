@@ -17,7 +17,7 @@ func (PrinterDaoImpl) CreatePrintSize(printSize *models.PrintSize) (err error) {
 		if err != nil {
 			return err
 		} else {
-			printSize.ID = uint(id)
+			printSize.ID = string(id)
 		}
 	}
 	return
@@ -28,12 +28,12 @@ func (PrinterDaoImpl) UpdatePrintSize(printSize *models.PrintSize) (err error) {
 	return
 }
 
-func (PrinterDaoImpl) DeletePrintSizeByID(id uint) (err error) {
+func (PrinterDaoImpl) DeletePrintSizeByID(id string) (err error) {
 	_, err = Db.Exec("DELETE FROM print_size WHERE id=?", id)
 	return
 }
 
-func (PrinterDaoImpl) GetPrintSizeByID(id uint) (printSize *models.PrintSize, err error) {
+func (PrinterDaoImpl) GetPrintSizeByID(id string) (printSize *models.PrintSize, err error) {
 	err = Db.QueryRowx("SELECT * FROM print_size WHERE id=?", id).StructScan(&printSize)
 	return
 }
@@ -70,7 +70,7 @@ func (PrinterDaoImpl) CreateBrand(brand *models.Brand) (err error) {
 		if err != nil {
 			return err
 		} else {
-			brand.ID = uint(id)
+			brand.ID = string(id)
 		}
 	}
 	return
@@ -81,12 +81,12 @@ func (PrinterDaoImpl) UpdateBrand(brand *models.Brand) (err error) {
 	return
 }
 
-func (PrinterDaoImpl) DeleteBrandByID(id uint) (err error) {
+func (PrinterDaoImpl) DeleteBrandByID(id string) (err error) {
 	_, err = Db.Exec("DELETE FROM brand WHERE id=?", id)
 	return
 }
 
-func (PrinterDaoImpl) GetBrandByID(id uint) (brand *models.Brand, err error) {
+func (PrinterDaoImpl) GetBrandByID(id string) (brand *models.Brand, err error) {
 	err = Db.QueryRowx("SELECT * FROM brand WHERE id=?", id).StructScan(&brand)
 	return
 }
@@ -123,7 +123,7 @@ func (PrinterDaoImpl) CreatePrintingTechnology(printingTechnology *models.Printi
 		if err != nil {
 			return err
 		} else {
-			printingTechnology.ID = uint(id)
+			printingTechnology.ID = string(id)
 		}
 	}
 	return
@@ -134,12 +134,12 @@ func (PrinterDaoImpl) UpdatePrintingTechnology(printingTechnology *models.Printi
 	return
 }
 
-func (PrinterDaoImpl) DeletePrintingTechnologyByID(id uint) (err error) {
+func (PrinterDaoImpl) DeletePrintingTechnologyByID(id string) (err error) {
 	_, err = Db.Exec("DELETE FROM printing_technology WHERE id=?", id)
 	return
 }
 
-func (PrinterDaoImpl) GetPrintingTechnologyByID(id uint) (printingTechnology *models.PrintingTechnology, err error) {
+func (PrinterDaoImpl) GetPrintingTechnologyByID(id string) (printingTechnology *models.PrintingTechnology, err error) {
 	err = Db.QueryRowx("SELECT * FROM printing_technology WHERE id=?", id).StructScan(&printingTechnology)
 	return
 }
@@ -176,7 +176,7 @@ func (PrinterDaoImpl) CreateFunctionType(functionType *models.FunctionType) (err
 		if err != nil {
 			return err
 		} else {
-			functionType.ID = uint(id)
+			functionType.ID = string(id)
 		}
 	}
 	return
@@ -187,12 +187,12 @@ func (PrinterDaoImpl) UpdateFunctionType(functionType *models.FunctionType) (err
 	return
 }
 
-func (PrinterDaoImpl) DeleteFunctionTypeByID(id uint) (err error) {
+func (PrinterDaoImpl) DeleteFunctionTypeByID(id string) (err error) {
 	_, err = Db.Exec("DELETE FROM function_type WHERE id=?", id)
 	return
 }
 
-func (PrinterDaoImpl) GetFunctionTypeByID(id uint) (functionType *models.FunctionType, err error) {
+func (PrinterDaoImpl) GetFunctionTypeByID(id string) (functionType *models.FunctionType, err error) {
 	err = Db.QueryRowx("SELECT * FROM function_type WHERE id=?", id).StructScan(&functionType)
 	return
 }
@@ -222,11 +222,6 @@ func (PrinterDaoImpl) DeleteAllFunctionTypes() (err error) {
 // PrintResolution functions
 func (PrinterDaoImpl) CreatePrintResolution(printResolution *models.PrintResolution) (err error) {
 	_, err = Db.NamedExec("INSERT INTO print_resolution (x, y) VALUES (:x, :y)", &printResolution)
-	return
-}
-
-func (PrinterDaoImpl) UpdatePrintResolution(printResolution *models.PrintResolution) (err error) {
-	_, err = Db.NamedExec("update print_resolution set x=:x, y=:y where x =:x, y=:y", &printResolution)
 	return
 }
 
@@ -272,7 +267,7 @@ func (PrinterDaoImpl) CreatePrinter(printer *models.Printer) (err error) {
 		if err != nil {
 			return err
 		} else {
-			printer.ID = uint(id)
+			printer.ID = string(id)
 		}
 	}
 	return
@@ -283,12 +278,12 @@ func (PrinterDaoImpl) UpdatePrinter(printer *models.Printer) (err error) {
 	return
 }
 
-func (PrinterDaoImpl) DeletePrinterByID(id uint) (err error) {
+func (PrinterDaoImpl) DeletePrinterByID(id string) (err error) {
 	_, err = Db.Exec("DELETE FROM printer WHERE id=?", id)
 	return
 }
 
-func (PrinterDaoImpl) GetPrinterByID(id uint) (printer *models.Printer, err error) {
+func (PrinterDaoImpl) GetPrinterByID(id string) (printer *models.Printer, err error) {
 	err = Db.QueryRowx("SELECT * FROM printer WHERE id=?", id).StructScan(&printer)
 	return
 }

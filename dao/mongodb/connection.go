@@ -1,22 +1,25 @@
 package mongodb
 
 import (
-	"gopkg.in/mgo.v2"
+	"log"
+
+	"github.com/globalsign/mgo"
+	"github.com/qwertypomy/printers/config"
+	"github.com/qwertypomy/printers/utils"
 )
 
-var Db *mgo.Session
+var Db *mgo.Database
 
 func init() {
-	Db = getSession()
+	cfg, err := config.GetConfig()
+	utils.FatalError(err)
+	Db = getSession().DB(cfg.Database)
 }
 
 func getSession() (session *mgo.Session) {
 	session, err := mgo.Dial("localhost")
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
-	defer session.Close()
-
-	session.SetMode(mgo.Monotonic, true)
 	return
 }

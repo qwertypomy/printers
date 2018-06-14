@@ -2,8 +2,9 @@ package config
 
 import (
 	"encoding/json"
-	"github.com/qwertypomy/printers/models"
 	"os"
+
+	"github.com/qwertypomy/printers/models"
 )
 
 func GetConfig() (models.Config, error) {
